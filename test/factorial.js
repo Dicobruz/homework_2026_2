@@ -52,4 +52,18 @@ QUnit.module('Тестируем функцию factorial', () => {
         assert.throws(() => factorial(true), TypeError, 'TypeError для true');
         assert.throws(() => factorial([ 5 ]), TypeError, 'TypeError для массива [5]');
     });
+
+    QUnit.test('Возвращает правильный результат при повторных вызовах', (assert) => {
+        assert.strictEqual(factorial(12), 479001600, '12! = 479001600');
+        assert.strictEqual(factorial(12), 479001600, 'повторный вызов: 12! = 479001600');
+        assert.strictEqual(factorial(6), 720, 'меньшее число после большего: 6! = 720');
+        assert.strictEqual(factorial(15), 1307674368000, 'большее число после меньшего: 15! = 1307674368000');
+    });
+
+    QUnit.test('Переполнение и ошибки не влияют на последующие вызовы', (assert) => {
+        assert.strictEqual(factorial(171), Infinity, '171! = Infinity');
+        assert.strictEqual(factorial(5), 120, '5! = 120 после переполнения');
+        assert.throws(() => factorial(-1), RangeError, 'RangeError для -1');
+        assert.strictEqual(factorial(5), 120, '5! = 120 после ошибки');
+    });
 });
